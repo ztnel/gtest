@@ -6,7 +6,7 @@ project(unit)
 ### Test definitions ###
 ##
 
-configure_file(test_config.in
+configure_file(CMakeLists.txt.in
 	googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
