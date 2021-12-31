@@ -19,7 +19,7 @@ jobs:
     - name: Test
       working-directory: ${{runner.workspace}}/build
       run: GTEST_OUTPUT=xml:results/ GTEST_COLOR=1 ctest -V
-    - name: Upload test results
+    - name: Upload test results on failure
       uses: actions/upload-artifact@v2
       if: failure()
       with:
