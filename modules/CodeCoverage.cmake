@@ -132,7 +132,7 @@ include(CMakeParseArguments)
 option(CODE_COVERAGE_VERBOSE "Verbose information" FALSE)
 
 # Check prereqs
-find_program( GCOV_PATH gcov )
+find_program( GCOV_PATH gcov-11 )
 find_program( LCOV_PATH  NAMES lcov lcov.bat lcov.exe lcov.perl)
 find_program( FASTCOV_PATH NAMES fastcov fastcov.py )
 find_program( GENHTML_PATH NAMES genhtml genhtml.perl genhtml.bat )
@@ -150,7 +150,7 @@ if("${CMAKE_${LANG}_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
     if("${CMAKE_${LANG}_COMPILER_VERSION}" VERSION_LESS 3)
         message(FATAL_ERROR "Clang version must be 3.0.0 or greater! Aborting...")
     endif()
-elseif(NOT CMAKE_COMPILER_IS_GNUCXX)
+elseif(NOT CMAKE_COMPILER_IS_GNUCC)
     if("${CMAKE_Fortran_COMPILER_ID}" MATCHES "[Ff]lang")
         # Do nothing; exit conditional without error if true
     elseif("${CMAKE_Fortran_COMPILER_ID}" MATCHES "GNU")
