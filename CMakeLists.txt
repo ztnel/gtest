@@ -29,9 +29,9 @@ add_custom_target(gcov
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 add_custom_command(TARGET gcov
     COMMENT "Executing gcov. Artefacts will be compiled to: ${CMAKE_BINARY_DIR}/coverage"	
-	COMMAND gcov -abcfu ${CMAKE_SOURCE_DIR}/src/*.c -o ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf1.dir/__/src/ ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf2.dir/__/src/ > CoverageSummary.tmp
+	COMMAND gcov -abcfu ${CMAKE_SOURCE_DIR}/src/sf1.c -o ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf1.dir/__/src/
+	COMMAND gcov -abcfu ${CMAKE_SOURCE_DIR}/src/sf2.c -o ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf2.dir/__/src/
 	COMMAND gcovr -r ${PROJECT_SOURCE_DIR}
-    COMMAND cat CoverageSummary.tmp
 	DEPENDS "${CMAKE_TEST_DIRECTORY}"
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage)
 add_dependencies(gcov ci)
@@ -42,8 +42,11 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES coverage)
 
 # create gcov clean target. This cleans build and generated .gcno and .gcda aretefacts
 add_custom_target(scrub
-    COMMAND ${CMAKE_MAKE_PROGRAM} clean
-    COMMAND rm -f ${ARTEFACTS}
+    # COMMAND ${CMAKE_MAKE_PROGRAM} clean
+    COMMAND rm -f ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf1.dir/__/src/*.gcda
+    # COMMAND rm -f ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf1.dir/__/src/*.gcno
+    COMMAND rm -f ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf2.dir/__/src/*.gcda
+    # COMMAND rm -f ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf2.dir/__/src/*.gcno
     COMMAND echo "-- Coverage artefacts have been removed from ${CMAKE_BINARY_DIR}/coverage"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
