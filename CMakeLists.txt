@@ -9,11 +9,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_C_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
 # stop cmake from including extension in .gnco file resolution for gcov
-set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
+set(CMAKE_C_OUTPUT_EXTENSION_REPLACE ON)
+set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 
-# set artefacts path
-set(ARTEFACT_DIR ${CMAKE_BINARY_DIR}/CMakeFiles/ci.dir/src)
-message("-- Artefacts will be written to: ${ARTEFACT_DIR}")
+set(CMAKE_TEST_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
 
 ##
 ### Source definitions ###
@@ -29,11 +28,12 @@ add_custom_target(gcov
     COMMAND ${CMAKE_MAKE_PROGRAM} ci 
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 add_custom_command(TARGET gcov
-    COMMAND echo "============= GCOV ============="
-    COMMAND gcov -abcfu ${CMAKE_SOURCE_DIR}/src/*.c -o ${ARTEFACT_DIR} > CoverageSummary.tmp
+    COMMENT "Executing gcov. Artefacts will be compiled to: ${CMAKE_BINARY_DIR}/coverage"	
+	COMMAND gcov -abcfu ${CMAKE_SOURCE_DIR}/src/*.c -o ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf1.dir/__/src/ ${CMAKE_TEST_DIRECTORY}/CMakeFiles/test_sf2.dir/__/src/ > CoverageSummary.tmp
+	COMMAND gcovr -r ${PROJECT_SOURCE_DIR}
     COMMAND cat CoverageSummary.tmp
-    COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/coverage"
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage)
+	DEPENDS "${CMAKE_TEST_DIRECTORY}"
+	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage)
 add_dependencies(gcov ci)
 # add coverage linker flag for clang
 link_libraries(--coverage)
@@ -43,8 +43,7 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES coverage)
 # create gcov clean target. This cleans build and generated .gcno and .gcda aretefacts
 add_custom_target(scrub
     COMMAND ${CMAKE_MAKE_PROGRAM} clean
-    COMMAND rm -f ${ARTEFACT_DIR}/*.gcno
-    COMMAND rm -f ${ARTEFACT_DIR}/*.gcda
+    COMMAND rm -f ${ARTEFACTS}
     COMMAND echo "-- Coverage artefacts have been removed from ${CMAKE_BINARY_DIR}/coverage"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
