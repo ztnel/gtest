@@ -20,7 +20,7 @@ add_executable(ci ${sources})
 # Setup coverage with gcov
 include(tests/CodeCoverage.cmake)
 append_coverage_compiler_flags()
-set(COVERAGE_EXCLUDES "${PROJECT_SOURCE_DIR}/tests/*" "${PROJECT_SOURCE_DIR}/main.c")
+set(COVERAGE_EXCLUDES "${PROJECT_SOURCE_DIR}/tests/*" "${PROJECT_SOURCE_DIR}/main.c" "${CMAKE_BIN_DIR}/googletest-src")
 setup_target_for_coverage_gcovr_xml(
     NAME cov
     EXECUTABLE GTEST_COLOR=1 ctest -V
@@ -37,4 +37,3 @@ add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
         ${CMAKE_BINARY_DIR}/googletest-build)
 enable_testing()
 add_subdirectory(tests)
-
