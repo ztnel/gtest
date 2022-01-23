@@ -286,7 +286,7 @@ function(setup_target_for_coverage_gcovr_xml)
     add_custom_target(${Coverage_NAME}
         COMMAND ${GCOVR_XML_EXEC_TESTS_CMD}
         COMMAND ${GCOVR_XML_CMD}
-        
+        COMMAND ${GCOVR_PATH} -r ${BASEDIR} ${GCOVR_ADDITIONAL_ARGS} ${GCOVR_EXCLUDE_ARGS}
         BYPRODUCTS ${Coverage_NAME}.xml
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         DEPENDS ${Coverage_DEPENDENCIES}
