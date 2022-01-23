@@ -34,13 +34,14 @@ add_executable(ci ${sources})
 include(tests/CodeCoverage.cmake)
 append_coverage_compiler_flags()
 link_libraries(--coverage)
-set(COVERAGE_EXCLUDES
-    '${PROJECT_SOURCE_DIR}/tests/*'
-    '${PROJECT_SOURCE_DIR}/main.c')
+set(
+    COVERAGE_EXCLUDES
+    "${PROJECT_SOURCE_DIR}/tests/*"
+    "${PROJECT_SOURCE_DIR}/main.c"
+)
 setup_target_for_coverage_gcovr_xml(
     NAME cov
     EXECUTABLE GTEST_COLOR=1 ctest -V
-    EXCLUDE 
 )
 # create gcov target and run coverage with make
 # add_custom_target(gcov
